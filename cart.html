@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - Redstore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .address-form {
+            margin-bottom: 20px;
+        }
+        
+        .address-form h3 {
+            margin-bottom: 10px;
+        }
+        
+        .address-form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .total-price {
+            border-top: 2px solid #333;
+            padding-top: 20px;
+        }
+        
+        .total-price button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .total-price button:hover {
+            background-color: #555;
+        }
+        
+        #confirmationMessage {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo.png" width="125px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Contact</a></li>
+                    <li><a href="account.php">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onClick="menutoggle()">
+        </div>
+    </div>
+
+    <div class="small-container cart-page">
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="images/buy-1.jpg">
+                        <div>
+                            <p>Red Printed T-Shirt</p>
+                            <small>Price: $<span class="price">50.00</span></small><br>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td class="price">$50.00</td>
+                <td><input type="number" value="1" class="quantity" onchange="calculateSubtotal(this)"></td>
+                <td class="subtotal">$50.00</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="images/buy-2.jpg">
+                        <div>
+                            <p>Shoes</p>
+                            <small>Price: $<span class="price">50.00</span></small><br>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td class="price">$1000.00</td>
+                <td><input type="number" value="1" class="quantity" onchange="calculateSubtotal(this)"></td>
+                <td class="subtotal">$1000.00</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="cart-info">
+                        <img src="images/buy-3.jpg">
+                        <div>
+                            <p>Track</p>
+                            <small>Price: $<span class="price">50.00</span></small><br>
+                            <a href="">Remove</a>
+                        </div>
+                    </div>
+                </td>
+                <td class="price">$250.00</td>
+                <td><input type="number" value="1" class="quantity" onchange="calculateSubtotal(this)"></td>
+                <td class="subtotal">$250.00</td>
+            </tr>
+            <!-- Add more products here -->
+        </table>
+
+        <div class="total-price">
+            <table>
+                <tr>
+                    <td>Subtotal</td>
+                    <td id="subtotal">$50.00</td>
+                </tr>
+                <!-- Add more rows for tax, total, etc. if needed -->
+            </table>
+        </div>
+        <div class="address-form">
+            <h3>Delivery Address</h3>
+            <form id="addressForm">
+                <input type="text" placeholder="Full Name" required><br>
+                <input type="text" placeholder="Address Line 1" required><br>
+                <input type="text" placeholder="Address Line 2"><br>
+                <input type="text" placeholder="City" required><br>
+                <input type="text" placeholder="State/Province" required><br>
+                <input type="text" placeholder="Postal/ZIP Code" required><br>
+                <input type="text" placeholder="Country" required><br>
+            </form>
+        </div>
+        <button onclick="confirmOrder()">Confirm Order</button>
+        <p id="confirmationMessage" style="display: none;">Your order has been confirmed. Payment will be collected upon delivery.</p>
+    </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Footer content -->
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2024 - SATYARTHI ROHIT</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateSubtotal(input) {
+            var price = parseFloat(input.parentNode.previousElementSibling.innerHTML.replace('$', ''));
+            var quantity = parseInt(input.value);
+            var subtotal = price * quantity;
+            input.parentNode.nextElementSibling.innerHTML = '$' + subtotal.toFixed(2);
+
+            var subtotalElements = document.querySelectorAll('.subtotal');
+            var total = 0;
+            for (var i = 0; i < subtotalElements.length; i++) {
+                total += parseFloat(subtotalElements[i].innerHTML.replace('$', ''));
+            }
+            document.getElementById('subtotal').innerHTML = '$' + total.toFixed(2);
+        }
+
+        function confirmOrder() {
+            var addressForm = document.getElementById('addressForm');
+            if (addressForm.checkValidity()) {
+                document.getElementById('confirmationMessage').style.display = 'block';
+            } else {
+                alert('Please fill out all address fields.');
+            }
+        }
+
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px";
+            } else {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
